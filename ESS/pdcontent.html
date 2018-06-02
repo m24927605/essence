@@ -687,7 +687,7 @@
 
           <script>
             $(function () {
-              var sizeQty = 0;
+              var sizeQty = 0;//20180602 修改
               $('.js-pdslide').each(function () {
                 $(this).magnificPopup({
                   delegate: 'a',
@@ -818,28 +818,33 @@
 
                 $(".js-size ul li").on("click", function () {
                   if (!$(this).find('a').data('qty')) {
+                    sizeQty = 0;
                     $(".nums").text(0);
-                    $(".plus").off("click");
-                    $(".minus").off("click");
                   }
                   else {
                     $(".nums").text(1);
                   }
                 });
               }
+              //20180602 修改 start
               // 數量減
               $(".minus").click(function () {
                 var t = $(this).parent().find('.nums');
                 t.text(parseInt(t.text()) - 1);
-                if (t.text() < 1) {
+
+                if (sizeQty == 0) {
+                  t.text(0);
+                } else if (t.text() <= 1 && sizeQty > 0) {
                   t.text(1);
+                } else if (t.text() == sizeQty) {
+                  t.text(parseInt(sizeQty));
                 }
-                //TotalPrice();
+
               });
               // 數量加
               $(".plus").click(function (e) {
                 var t = $(this).parent().find('.nums');
-                if (t.text() < 1) {
+                if (t.text() < 1 && sizeQty > 0) {
                   t.text(1);
 
                 } else if (t.text() == sizeQty) {
@@ -850,7 +855,7 @@
                 }
                 //TotalPrice();
               });
-
+              //20180602 修改 end
 
               pdContentUI.prototype.qtyChangEvent = function () {
                 var self = this;
